@@ -1,6 +1,8 @@
-package ru.gb.spring.wintermarket.dto;
+package ru.gb.spring.wintermarket.model;
 
 import lombok.Data;
+import ru.gb.spring.wintermarket.dto.ProductDto;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,13 +61,15 @@ public class Cart {
             }
         }
     }
-    public void delete(ProductDto productDto) {
-        items.removeIf(p -> p.getProductId().equals(productDto.getId()));
-        recalculate();
+    public void remove(ProductDto productDto) {
+        if( items.removeIf(p -> p.getProductId().
+                            equals(productDto.getId())) ){
+            recalculate();
+        }
     }
     public void clear() {
         items.clear();
-        recalculate();
+        totalPrice = 0;
     }
 }
 

@@ -1,50 +1,47 @@
 package ru.gb.spring.wintermarket.entity;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
+@Table(name = "orders")
 @Data
 @NoArgsConstructor
-@Table(name = "users")
-public class User {
+@AllArgsConstructor
+public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username")
-    private String username;
-    @Column(name = "password")
-    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "order",
+            cascade = CascadeType.PERSIST)
+    private List<OrderItem> items;
+
     @Column(name = "address")
     private String address;
+
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "total_price")
+    private int totalPrice;
+
     @CreationTimestamp//hibernate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @UpdateTimestamp//hibernate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
-
-
-
-
-
-
-
-
-
 }

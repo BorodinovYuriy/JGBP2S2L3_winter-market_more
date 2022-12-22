@@ -12,8 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.spring.wintermarket.dto.JwtRequest;
 import ru.gb.spring.wintermarket.dto.JwtResponse;
+import ru.gb.spring.wintermarket.dto.StringResponse;
 import ru.gb.spring.wintermarket.services.UserService;
 import ru.gb.spring.wintermarket.utils.JwtTokenUtil;
+
+import java.security.Principal;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -34,16 +38,20 @@ public class AuthController {
 
          //проверили, тогда достаем из базы userDetails
          UserDetails userDetails = userService.loadUserByUsername(authRequests.getUsername());
-         log.info(userDetails.getUsername() + "->userDetails-AuthControl->AUTHORIZED");
+         log.warn(userDetails.getUsername() + "->userDetails-AuthControl->AUTHORIZED");
          //По нему собираем токен
          String token = jwtTokenUtil.generateToken(userDetails);
          //клиенту идёт ответ Json с полем token
+         log.warn("Token is " + token.toString());
          return ResponseEntity.ok(new JwtResponse(token));
     }
     @GetMapping("/secured")
         public String testSecurity(){
          return "Security is OK";
         }
-
+    @GetMapping("/auth_check")
+    public StringResponse authCheck(Principal principal){
+        return new StringResponse("/auth_check " + principal.getName());
+    }
 
 }

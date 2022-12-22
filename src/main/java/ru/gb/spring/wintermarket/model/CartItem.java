@@ -1,4 +1,4 @@
-package ru.gb.spring.wintermarket.dto;
+package ru.gb.spring.wintermarket.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +19,10 @@ public class CartItem {
         this.productTitle = productTitle;
         this.quantity = quantity;
         this.pricePerProduct = pricePerProduct;
+        price = pricePerProduct * quantity;
+    }
+    public void changeQuantity(int delta) {
+        quantity += delta;
         price = pricePerProduct * quantity;
     }
 
