@@ -2,8 +2,7 @@ package ru.gb.spring.wintermarket.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.spring.wintermarket.converters.ProductConverter;
-import ru.gb.spring.wintermarket.dto.Cart;
+import ru.gb.spring.wintermarket.model.Cart;
 import ru.gb.spring.wintermarket.services.CartService;
 
 @RestController
@@ -22,9 +21,6 @@ public class CartController {
         return cartService.getCurrentCart();
     }
 
-
-
-
     @PutMapping("/increase/{id}")
     public void increaseProductInCart(@PathVariable Long id){
         cartService.increaseProductInCart(id);
@@ -35,12 +31,12 @@ public class CartController {
     }
     @DeleteMapping("/{id}")
     public void deleteProductById(@PathVariable Long id){
-        cartService.deleteProductById(id);
+        cartService.removeProductById(id);
 
     }
     @DeleteMapping()
     public void clearCart(){
-        cartService.clearCart();
+        cartService.clear();
 
     }
 

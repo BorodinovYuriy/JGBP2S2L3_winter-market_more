@@ -3,7 +3,7 @@ package ru.gb.spring.wintermarket.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.gb.spring.wintermarket.converters.ProductConverter;
-import ru.gb.spring.wintermarket.dto.Cart;
+import ru.gb.spring.wintermarket.model.Cart;
 import ru.gb.spring.wintermarket.entity.Product;
 import ru.gb.spring.wintermarket.exceptions.ResourceNotFoundException;
 
@@ -46,14 +46,14 @@ public class CartService {
         tempCart.decreaseProduct(productConverter.entityToDto(product));
     }
 
-    public void deleteProductById(Long id) {
+    public void removeProductById(Long id) {
         Product product = productService.findById(id).
                 orElseThrow(()->
                         new ResourceNotFoundException("Невозможно найти объект с id: "+ id));
-        tempCart.delete(productConverter.entityToDto(product));
+        tempCart.remove(productConverter.entityToDto(product));
     }
 
-    public void clearCart() {
+    public void clear() {
         tempCart.clear();
     }
 }
